@@ -311,7 +311,19 @@ document.getElementById('lightColor').addEventListener('input', e => colorLight 
 document.getElementById('speed').addEventListener('input', e => speedMul = parseFloat(e.target.value));
 document.getElementById('scale').addEventListener('input', e => scaleMul = parseFloat(e.target.value));
 document.getElementById('blur').addEventListener('input', e => {
-  canvas.style.filter = e.target.value > 0 ? `blur(${e.target.value}px)` : 'none';
+  const v = parseFloat(e.target.value);
+  if (v > 0) {
+    const pad = v * 2;
+    canvas.style.filter = `blur(${v}px)`;
+    canvas.style.inset = `-${pad}px`;
+    canvas.style.width = `calc(100% + ${pad * 2}px)`;
+    canvas.style.height = `calc(100dvh + ${pad * 2}px)`;
+  } else {
+    canvas.style.filter = 'none';
+    canvas.style.inset = '0';
+    canvas.style.width = '100%';
+    canvas.style.height = '100dvh';
+  }
 });
 document.getElementById('enhanced').addEventListener('change', e => {
   useProgram(e.target.checked ? progEnhanced : progOriginal);
