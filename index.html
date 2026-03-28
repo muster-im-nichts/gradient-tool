@@ -211,8 +211,8 @@ void main() {
 
     // Blend: primary noise drives dark/light, secondary adds subtle shimmer
     float blend = n * 0.75 + n2 * 0.25;
-    // Shift toward lighter tones — reduce dark area dominance
-    blend = blend * 0.7 + 0.05;
+    // Shift toward darker tones — more dark areas
+    blend = blend * 0.7 + 0.35;
     blend = smoothstep(0.0, 1.0, blend);
 
     // Generate accent color (midpoint shifted slightly toward a warmer/cooler tone)
