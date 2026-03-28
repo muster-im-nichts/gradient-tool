@@ -87,6 +87,7 @@ precision mediump float;
 varying vec2 vUvs;
 uniform float u_time;
 uniform float u_scale;
+uniform float u_aspect;
 uniform vec3 u_colorDark;
 uniform vec3 u_colorLight;
 
@@ -132,6 +133,7 @@ float fbm(vec3 coords, float persistance, float lacunarity) {
 
 void main() {
     vec2 uv = vUvs;
+    uv.x *= u_aspect;
     vec3 noiseCoords = vec3(
         vec2(uv.x + uv.x - u_time * 0.01, uv.y + uv.x) * u_scale,
         u_time * 0.04
@@ -178,6 +180,7 @@ gl.vertexAttribPointer(aUv, 2, gl.FLOAT, false, 16, 8);
 
 const uTime = gl.getUniformLocation(prog, 'u_time');
 const uScale = gl.getUniformLocation(prog, 'u_scale');
+const uAspect = gl.getUniformLocation(prog, 'u_aspect');
 const uDark = gl.getUniformLocation(prog, 'u_colorDark');
 const uLight = gl.getUniformLocation(prog, 'u_colorLight');
 
@@ -230,6 +233,7 @@ function render() {
   const t = (performance.now() - start) / 1000 * speedMul;
   gl.uniform1f(uTime, t);
   gl.uniform1f(uScale, scaleMul);
+  gl.uniform1f(uAspect, canvas.width / canvas.height);
   gl.uniform3fv(uDark, colorDark);
   gl.uniform3fv(uLight, colorLight);
   gl.drawArrays(gl.TRIANGLES, 0, 6);
